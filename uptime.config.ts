@@ -28,7 +28,7 @@ const workerConfig = {
       // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
       tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://furryfurry.cn'
+      statusPageLink: 'https://furryfurry.cn',
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
       timeout: 10000,
