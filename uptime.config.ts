@@ -1,11 +1,8 @@
 const pageConfig = {
   // Title for your status page
-  title: "furry百科状态监测",
+  title: 'furry百科状态监测',
   // Links shown at the header of your status page, could set `highlight` to `true`
-  links: [
-    { link: 'https://furryfurry.cn', label: '官网', highlight: true },
-
-  ],
+  links: [{ link: 'https://furryfurry.cn', label: '官网', highlight: true }],
 }
 
 const workerConfig = {
@@ -29,6 +26,8 @@ const workerConfig = {
       tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
       statusPageLink: 'https://app.furryfurry.cn/healthz',
+      // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
+      sla: 99.9,
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       // expectedCodes: [200],
       // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
@@ -50,12 +49,12 @@ const workerConfig = {
   notification: {
     // [Optional] apprise API server URL
     // if not specified, no notification will be sent
-    appriseApiServer: "https://apprise.example.com/notify",
+    appriseApiServer: 'https://apprise.example.com/notify',
     // [Optional] recipient URL for apprise, refer to https://github.com/caronc/apprise
     // if not specified, no notification will be sent
-    recipientUrl: "tgram://bottoken/ChatID",
+    recipientUrl: 'tgram://bottoken/ChatID',
     // [Optional] timezone used in notification messages, default to "Etc/GMT"
-    timeZone: "Asia/Shanghai",
+    timeZone: 'Asia/Shanghai',
     // [Optional] grace period in minutes before sending a notification
     // notification will be sent only if the monitor is down for N continuous checks after the initial failure
     // if not specified, notification will be sent immediately
@@ -72,7 +71,6 @@ const workerConfig = {
     ) => {
       // This callback will be called when there's a status change for any monitor
       // Write any Typescript code here
-
       // This will not follow the grace period settings and will be called immediately when the status changes
       // You need to handle the grace period manually if you want to implement it
     },

@@ -35,6 +35,7 @@ type MonitorTarget = {
   target: string // url for http, hostname:port for tcp
   tooltip?: string
   statusPageLink?: string
+  sla?: number
   checkLocationWorkerRoute?: string
 
   // HTTP Code

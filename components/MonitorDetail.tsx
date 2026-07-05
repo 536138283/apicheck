@@ -39,12 +39,17 @@ export default function MonitorDetail({
   }
 
   const uptimePercent = (((totalTime - downTime) / totalTime) * 100).toPrecision(4)
+  const slaPercent = monitor.sla === undefined ? undefined : monitor.sla.toPrecision(4)
 
   // Conditionally render monitor name with or without hyperlink based on monitor.url presence
   const monitorNameElement = (
     <Text mt="sm" fw={700} style={{ display: 'inline-flex', alignItems: 'center' }}>
       {monitor.statusPageLink ? (
-        <a href={monitor.statusPageLink} target="_blank" style={{ display: 'inline-flex', alignItems: 'center', color: 'inherit' }}>
+        <a
+          href={monitor.statusPageLink}
+          target="_blank"
+          style={{ display: 'inline-flex', alignItems: 'center', color: 'inherit' }}
+        >
           {statusIcon} {monitor.name}
         </a>
       ) : (
@@ -64,9 +69,20 @@ export default function MonitorDetail({
           monitorNameElement
         )}
 
-        <Text mt="sm" fw={700} style={{ display: 'inline', color: getColor(uptimePercent, true) }}>
-          Overall: {uptimePercent}%
-        </Text>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {slaPercent && (
+            <Text mt="sm" fw={700} style={{ display: 'inline', color: getColor(slaPercent, true) }}>
+              SLA: {slaPercent}%
+            </Text>
+          )}
+          <Text
+            mt="sm"
+            fw={700}
+            style={{ display: 'inline', color: getColor(uptimePercent, true) }}
+          >
+            Overall: {uptimePercent}%
+          </Text>
+        </div>
       </div>
 
       <DetailBar monitor={monitor} state={state} />
