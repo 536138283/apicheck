@@ -46,7 +46,7 @@ const workerConfig = {
     },
     {
       // `id` should be unique, history will be kept if the `id` remains constant
-      id: 'furry百科',
+      id: 'furry百科2',
       // `name` is used at status page and callback message
       name: 'furry百科',
       // `method` should be a valid HTTP Method
