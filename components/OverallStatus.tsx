@@ -1,6 +1,6 @@
 import { Center, Title } from '@mantine/core'
 import { IconCircleCheck, IconAlertCircle } from '@tabler/icons-react'
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 
 function useWindowVisibility() {
   const [isVisible, setIsVisible] = useState(true);
@@ -41,22 +41,24 @@ export default function OverallStatus({
 
   const [openTime] = useState(Math.round(Date.now() / 1000))
   const [currentTime, setCurrentTime] = useState(Math.round(Date.now() / 1000))
-  const isWindowVisible = useWindowVisibility();
+  const isWindowVisible = useWindowVisibility()
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isWindowVisible) {
         return
       }
-      if (currentTime - state.lastUpdate > 300 && currentTime - openTime > 30) {
+
+      const nextCurrentTime = Math.round(Date.now() / 1000)
+      if (nextCurrentTime - state.lastUpdate > 300 && nextCurrentTime - openTime > 30) {
         // trigger a re-fetch
         window.location.reload()
       }
-      setCurrentTime(Math.round(Date.now() / 1000))
+      setCurrentTime(nextCurrentTime)
     }, 1000)
 
     return () => clearInterval(interval)
-  })
+  }, [isWindowVisible, openTime, state.lastUpdate])
 
   return (
     <>
