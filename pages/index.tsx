@@ -45,6 +45,9 @@ export default function Home({
     <>
       <Head>
         <title>{pageConfig.title}</title>
+        <meta httpEquiv="Cache-Control" content="no-store, no-cache, must-revalidate, proxy-revalidate" />
+        <meta httpEquiv="Pragma" content="no-cache" />
+        <meta httpEquiv="Expires" content="0" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

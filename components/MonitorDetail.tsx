@@ -5,6 +5,22 @@ import DetailChart from './DetailChart'
 import DetailBar from './DetailBar'
 import { getColor } from '@/util/color'
 
+function calculateAvailabilityPercent(
+  incidents: MonitorState['incident'][string],
+  monitorStartTime: number,
+  currentTime: number
+) {
+  const totalTime = currentTime - monitorStartTime
+  if (totalTime <= 0) return '100.0'
+
+  let downTime = 0
+  for (const incident of incidents) {
+    downTime += (incident.end ?? currentTime) - incident.start[0]
+  }
+
+  return (((totalTime - downTime) / totalTime) * 100).toPrecision(4)
+}
+
 export default function MonitorDetail({
   monitor,
   state,
@@ -33,14 +49,14 @@ export default function MonitorDetail({
       <IconCircleCheck style={{ width: '1.25em', height: '1.25em', color: '#059669' }} />
     )
 
-  let totalTime = Date.now() / 1000 - state.incident[monitor.id][0].start[0]
-  let downTime = 0
-  for (let incident of state.incident[monitor.id]) {
-    downTime += (incident.end ?? Date.now() / 1000) - incident.start[0]
-  }
-
-  const uptimePercent = (((totalTime - downTime) / totalTime) * 100).toPrecision(4)
-  const slaPercent = monitor.sla === undefined ? undefined : monitor.sla.toPrecision(4)
+  const currentTime = Date.now() / 1000
+  const monitorStartTime = state.incident[monitor.id][0].start[0]
+  const slaPercent = calculateAvailabilityPercent(
+    state.incident[monitor.id],
+    monitorStartTime,
+    currentTime
+  )
+  const targetSlaPercent = monitor.sla === undefined ? undefined : monitor.sla.toPrecision(4)
 
   // Conditionally render monitor name with or without hyperlink based on monitor.url presence
   const monitorNameElement = (
@@ -71,18 +87,18 @@ export default function MonitorDetail({
         )}
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {slaPercent && (
-            <Text mt="sm" fw={700} style={{ display: 'inline', color: getColor(slaPercent, true) }}>
-              SLA: {slaPercent}%
+          <Text mt="sm" fw={700} style={{ display: 'inline', color: getColor(slaPercent, true) }}>
+            SLA: {slaPercent}%
+          </Text>
+          {targetSlaPercent && (
+            <Text
+              mt="sm"
+              fw={700}
+              style={{ display: 'inline', color: getColor(targetSlaPercent, true) }}
+            >
+              Target: {targetSlaPercent}%
             </Text>
           )}
-          <Text
-            mt="sm"
-            fw={700}
-            style={{ display: 'inline', color: getColor(uptimePercent, true) }}
-          >
-            Overall: {uptimePercent}%
-          </Text>
         </div>
       </div>
 
