@@ -1,6 +1,6 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 
-import { Inter } from 'next/font/google'
 import { MonitorState, MonitorTarget } from '@/uptime.types'
 import { KVNamespace } from '@cloudflare/workers-types'
 import { pageConfig, workerConfig } from '@/uptime.config'
@@ -11,7 +11,25 @@ import { Center, Divider, Text } from '@mantine/core'
 import MonitorDetail from '@/components/MonitorDetail'
 
 export const runtime = 'experimental-edge'
-const inter = Inter({ subsets: ['latin'] })
+const fontFamily =
+  'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+
+function useHashMonitorId() {
+  const [monitorId, setMonitorId] = useState('')
+
+  useEffect(() => {
+    const updateMonitorId = () => {
+      setMonitorId(window.location.hash.substring(1))
+    }
+
+    updateMonitorId()
+    window.addEventListener('hashchange', updateMonitorId)
+
+    return () => window.removeEventListener('hashchange', updateMonitorId)
+  }, [])
+
+  return monitorId
+}
 
 export default function Home({
   state: stateStr,
@@ -28,7 +46,7 @@ export default function Home({
   }
 
   // Specify monitorId in URL hash to view a specific monitor (can be used in iframe)
-  const monitorId = window.location.hash.substring(1)
+  const monitorId = useHashMonitorId()
   if (monitorId) {
     const monitor = monitors.find((monitor) => monitor.id === monitorId)
     if (!monitor || !state) {
@@ -51,7 +69,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={inter.className}>
+      <main style={{ fontFamily }}>
         <Header />
 
         {state === undefined ? (

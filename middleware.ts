@@ -44,3 +44,7 @@ export async function middleware(request: NextRequest) {
 
   return withNoStoreHeaders(NextResponse.next())
 }
+
+export const config = {
+  matcher: ['/', '/api/:path*'],
+}
