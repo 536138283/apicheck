@@ -15,9 +15,9 @@ const workerConfig = {
     // Example HTTP Monitor
     {
       // `id` should be unique, history will be kept if the `id` remains constant
-      id: 'furry百科',
+      id: 'furry百科api服务',
       // `name` is used at status page and callback message
-      name: 'furry百科',
+      name: 'urry百科api服务',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
@@ -48,15 +48,15 @@ const workerConfig = {
       // `id` should be unique, history will be kept if the `id` remains constant
       id: '1',
       // `name` is used at status page and callback message
-      name: 'furry百科2',
+      name: 'furry百科官网',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
-      target: 'https://app.furryfurry.cn/healthz',
+      target: 'https://furryfurry.cn',
       // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
       tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://app.furryfurry.cn/healthz',
+      statusPageLink: 'https://furryfurry.cn',
       // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
       sla: 99.9,
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
