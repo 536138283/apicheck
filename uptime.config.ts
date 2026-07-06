@@ -44,6 +44,37 @@ const workerConfig = {
       // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Geo-specific-checks-setup before setting this value
       // checkLocationWorkerRoute: 'https://am.809098.xyz',
     },
+    {
+      // `id` should be unique, history will be kept if the `id` remains constant
+      id: 'furry百科',
+      // `name` is used at status page and callback message
+      name: 'furry百科',
+      // `method` should be a valid HTTP Method
+      method: 'GET',
+      // `target` is a valid URL
+      target: 'https://app.furryfurry.cn/healthz',
+      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
+      tooltip: 'furry百科服务健康检查',
+      // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
+      statusPageLink: 'https://app.furryfurry.cn/healthz',
+      // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
+      sla: 99.9,
+      // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
+      // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
+      timeout: 10000,
+      // [OPTIONAL] headers to be sent
+      // headers: {
+      //   'User-Agent': 'Uptimeflare',
+      //   Authorization: 'Bearer YOUR_TOKEN_HERE',
+      // },
+      // [OPTIONAL] body to be sent
+      // body: 'Hello, world!',
+      // [OPTIONAL] if specified, the response must contains the keyword to be considered as operational.
+      // responseKeyword: 'success',
+      // [OPTIONAL] if specified, the check will run in your specified region,
+      // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Geo-specific-checks-setup before setting this value
+      // checkLocationWorkerRoute: 'https://am.809098.xyz',
+    },
   ],
   notification: {
     // [Optional] apprise API server URL
