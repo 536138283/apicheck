@@ -12,15 +12,16 @@ export default function MonitorDetail({
   monitor: MonitorTarget
   state: MonitorState
 }) {
-  if (!state.latency[monitor.id])
+  if (!state.latency[monitor.id] || !state.incident[monitor.id])
     return (
       <>
         <Text mt="sm" fw={700}>
           {monitor.name}
         </Text>
         <Text mt="sm" fw={700}>
-          No data available, please make sure you have deployed your workers with latest config and
-          check your worker status!
+          This monitor is configured on the status page, but no KV history exists for it yet.
+          Redeploy the Worker with the latest config, wait for one scheduled check, and then refresh
+          the page.
         </Text>
       </>
     )

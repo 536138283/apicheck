@@ -17,7 +17,7 @@ const workerConfig = {
       // `id` should be unique, history will be kept if the `id` remains constant
       id: 'furry百科api服务',
       // `name` is used at status page and callback message
-      name: 'urry百科api服务',
+      name: 'furry百科api服务',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
