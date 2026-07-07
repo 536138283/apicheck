@@ -50,19 +50,18 @@
 
   .statusTitle {
     max-width: 100%;
-    overflow: hidden;
-    margin-top: rem(14px);
-    font-size: rem(20px);
+    margin-top: rem(16px);
+    font-size: rem(21px);
     line-height: 1.2;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .updateText {
     max-width: 100%;
     overflow: hidden;
-    margin-top: rem(7px);
-    font-size: rem(13px);
+    margin-top: rem(9px);
+    font-size: rem(14px);
     line-height: 1.25;
     white-space: nowrap;
     text-overflow: ellipsis;

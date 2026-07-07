@@ -36,7 +36,7 @@
   box-sizing: border-box;
   width: min(100%, rem(865px));
   margin: 0 auto;
-  padding: rem(6px) rem(16px) rem(8px);
+  padding: rem(6px) rem(16px) rem(40px);
 }
 
 .emptyState {
@@ -85,7 +85,7 @@
   }
 
   .statusPanel {
-    padding: rem(2px) rem(10px) rem(4px);
+    padding: rem(8px) rem(10px) rem(40px);
   }
 
   .footer {
