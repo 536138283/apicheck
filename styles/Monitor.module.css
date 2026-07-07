@@ -1,0 +1,260 @@
+.listCenter {
+  width: 100%;
+  overflow: hidden;
+}
+
+.listPanel {
+  box-sizing: border-box;
+  width: min(100%, rem(865px));
+  min-width: 0;
+  margin-top: rem(24px);
+  display: grid;
+  gap: rem(16px);
+}
+
+.monitorItem {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: rem(14px) rem(16px) rem(18px);
+  border: rem(1px) solid rgba(255, 255, 255, 0.56);
+  border-radius: rem(12px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.22));
+  backdrop-filter: blur(24px) saturate(145%);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+}
+
+.monitorHeader {
+  display: flex;
+  gap: rem(12px);
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: rem(8px);
+}
+
+.monitorName {
+  display: inline-flex;
+  gap: rem(7px);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: rem(2px);
+  color: #152033;
+  font-size: rem(18px);
+  line-height: 1.25;
+}
+
+.monitorName a {
+  display: inline-flex;
+  gap: rem(7px);
+  align-items: center;
+  color: inherit;
+  text-decoration: none;
+}
+
+.monitorName a:hover {
+  color: #1f6f61;
+}
+
+.windowBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: rem(20px);
+  padding: rem(2px) rem(6px);
+  border: rem(1px) solid rgba(96, 112, 134, 0.18);
+  border-radius: rem(6px);
+  color: #607086;
+  background: rgba(255, 255, 255, 0.28);
+  font-size: rem(12px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.metricPill {
+  display: inline-flex;
+  align-items: center;
+  min-height: rem(30px);
+  margin-top: 0;
+  padding: rem(5px) rem(9px);
+  border: rem(1px) solid rgba(255, 255, 255, 0.5);
+  border-radius: rem(8px);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: inset 0 rem(1px) 0 rgba(255, 255, 255, 0.52);
+  line-height: 1;
+}
+
+.mutedMetric {
+  color: #607086;
+}
+
+.sectionHeader {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px) rem(14px);
+  align-items: center;
+  justify-content: space-between;
+  margin-top: rem(13px);
+  color: #607086;
+  font-size: rem(13px);
+  line-height: 1.4;
+}
+
+.sectionTitle {
+  display: inline-flex;
+  gap: rem(7px);
+  align-items: center;
+  font-weight: 700;
+}
+
+.sectionMeta {
+  color: #7a8798;
+  font-size: rem(11px);
+  font-weight: 600;
+}
+
+.barLegend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: rem(7px) rem(10px);
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.legendItem {
+  display: inline-flex;
+  gap: rem(4px);
+  align-items: center;
+  white-space: nowrap;
+}
+
+.legendDot {
+  width: rem(7px);
+  height: rem(7px);
+  border-radius: rem(2px);
+}
+
+.uptimeBars {
+  box-sizing: border-box;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: rem(2px);
+  align-items: center;
+  justify-content: center;
+  margin-top: rem(6px);
+  margin-bottom: rem(10px);
+  padding: rem(7px);
+  border: rem(1px) solid rgba(255, 255, 255, 0.38);
+  border-radius: rem(7px);
+  background: rgba(255, 255, 255, 0.18);
+  overflow: hidden;
+}
+
+.uptimeBar {
+  width: rem(7px);
+  height: rem(22px);
+  flex: 0 0 rem(7px);
+  border-radius: rem(2px);
+  box-shadow: inset 0 rem(1px) rem(1px) rgba(255, 255, 255, 0.45), 0 rem(4px) rem(10px) rgba(42, 73, 94, 0.08);
+}
+
+.chartFrame {
+  box-sizing: border-box;
+  max-width: 100%;
+  height: rem(164px);
+  margin-top: rem(10px);
+  padding: rem(10px) rem(8px) rem(2px);
+  border: rem(1px) solid rgba(255, 255, 255, 0.36);
+  border-radius: rem(10px);
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.emptyDetail {
+  padding: rem(12px) 0;
+}
+
+.emptyMessage {
+  color: #607086;
+}
+
+@media (max-width: 48em) {
+  .listPanel {
+    margin-top: rem(18px);
+    gap: rem(12px);
+  }
+
+  .monitorItem {
+    padding: rem(13px) rem(12px) rem(16px);
+    border-radius: rem(10px);
+  }
+
+  .monitorHeader {
+    flex-direction: column;
+    gap: rem(9px);
+  }
+
+  .metrics {
+    justify-content: flex-start;
+  }
+
+  .sectionHeader,
+  .barLegend {
+    justify-content: flex-start;
+  }
+
+  .monitorName {
+    font-size: rem(17px);
+  }
+
+  .metricPill {
+    min-height: rem(28px);
+  }
+
+  .chartFrame {
+    height: rem(150px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .monitorItem {
+    border-color: rgba(255, 255, 255, 0.13);
+    background: linear-gradient(180deg, rgba(31, 45, 62, 0.46), rgba(19, 28, 42, 0.3));
+  }
+
+  .metricPill,
+  .windowBadge,
+  .uptimeBars,
+  .chartFrame {
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: inset 0 rem(1px) 0 rgba(255, 255, 255, 0.09);
+  }
+
+  .monitorName {
+    color: #eef4ff;
+  }
+
+  .monitorName a:hover {
+    color: #8ed6c3;
+  }
+
+  .emptyMessage {
+    color: #a9b7ca;
+  }
+
+  .windowBadge,
+  .sectionHeader {
+    color: #a9b7ca;
+  }
+
+  .mutedMetric {
+    color: #a9b7ca;
+  }
+}

@@ -1,0 +1,121 @@
+.page {
+  min-height: 100vh;
+  color: #152033;
+  background-color: #f7f9fe;
+  background-image:
+    url('/xiowo-bg.svg'),
+    linear-gradient(135deg, rgba(238, 248, 244, 0.96), rgba(241, 246, 255, 0.94) 48%, rgba(250, 246, 238, 0.96));
+  background-attachment: scroll;
+  background-position:
+    center top,
+    center;
+  background-repeat:
+    repeat,
+    no-repeat;
+  background-size:
+    clamp(260px, 34vw, 500px) clamp(260px, 34vw, 500px),
+    cover;
+}
+
+.content {
+  width: min(100%, rem(960px));
+  margin: 0 auto rem(112px);
+  padding: 0 clamp(24px, 4vw, 40px);
+}
+
+.detailPanel,
+.footer {
+  border: rem(1px) solid rgba(255, 255, 255, 0.72);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.46));
+  box-shadow: 0 rem(24px) rem(70px) rgba(32, 53, 88, 0.12), inset 0 rem(1px) 0 rgba(255, 255, 255, 0.84);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+}
+
+.statusPanel {
+  box-sizing: border-box;
+  width: min(100%, rem(865px));
+  margin: 0 auto;
+  padding: rem(6px) rem(16px) rem(8px);
+}
+
+.emptyState {
+  min-height: rem(168px);
+  text-align: center;
+}
+
+.embedShell {
+  width: min(100%, rem(865px));
+  margin: 0 auto;
+  padding: rem(28px) rem(18px);
+}
+
+.detailPanel {
+  padding: rem(18px);
+  border-radius: rem(14px);
+}
+
+.footer {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  margin: 0 0 rem(28px);
+  padding: rem(12px) rem(20px);
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+  color: #607086;
+  text-align: center;
+}
+
+.footer a {
+  color: #1f6f61;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 48em) {
+  .content {
+    margin-bottom: rem(82px);
+    padding: 0 rem(20px);
+  }
+
+  .statusPanel {
+    padding: rem(2px) rem(10px) rem(4px);
+  }
+
+  .footer {
+    width: 100%;
+    margin-bottom: rem(18px);
+    padding: rem(12px) rem(14px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .page {
+    color: #eef4ff;
+    background-color: #151f31;
+    background-image:
+      url('/xiowo-bg.svg'),
+      linear-gradient(135deg, rgba(14, 28, 34, 0.98), rgba(21, 31, 49, 0.96) 48%, rgba(29, 36, 30, 0.98));
+  }
+
+  .detailPanel,
+  .footer {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: linear-gradient(180deg, rgba(31, 45, 62, 0.7), rgba(19, 28, 42, 0.52));
+    box-shadow: 0 rem(24px) rem(70px) rgba(0, 0, 0, 0.28), inset 0 rem(1px) 0 rgba(255, 255, 255, 0.11);
+  }
+
+  .footer {
+    color: #a9b7ca;
+  }
+
+  .footer a {
+    color: #8ed6c3;
+  }
+}

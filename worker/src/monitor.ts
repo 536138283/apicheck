@@ -8,7 +8,7 @@ export async function getStatus(
   let status = {
     ping: 0,
     up: false,
-    err: 'Unknown',
+    err: '未知错误',
   }
 
   const startTime = Date.now()
@@ -59,7 +59,7 @@ export async function getStatus(
         if (!monitor.expectedCodes.includes(response.status)) {
           console.log(`${monitor.name} expected ${monitor.expectedCodes}, got ${response.status}`)
           status.up = false
-          status.err = `Expected codes: ${JSON.stringify(monitor.expectedCodes)}, Got: ${response.status
+          status.err = `期望状态码：${JSON.stringify(monitor.expectedCodes)}，实际状态码：${response.status
             }`
           return status
         }
@@ -67,7 +67,7 @@ export async function getStatus(
         if (response.status < 200 || response.status > 299) {
           console.log(`${monitor.name} expected 2xx, got ${response.status}`)
           status.up = false
-          status.err = `Expected codes: 2xx, Got: ${response.status}`
+          status.err = `期望状态码：2xx，实际状态码：${response.status}`
           return status
         }
       }
@@ -77,7 +77,7 @@ export async function getStatus(
         if (!responseBody.includes(monitor.responseKeyword)) {
           console.log(`${monitor.name} expected keyword ${monitor.responseKeyword}, not found in response (truncated to 100 chars): ${responseBody.slice(0, 100)}`)
           status.up = false
-          status.err = "HTTP response doesn't contain the configured keyword"
+          status.err = "HTTP 响应不包含配置的关键字"
           return status
         }
       }
@@ -89,7 +89,7 @@ export async function getStatus(
       if (e.name === 'AbortError') {
         status.ping = monitor.timeout || 10000
         status.up = false
-        status.err = `Timeout after ${status.ping}ms`
+        status.err = `请求超时：${status.ping}ms`
       } else {
         status.up = false
         status.err = e.name + ': ' + e.message

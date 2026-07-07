@@ -1,29 +1,24 @@
-import { MonitorState, MonitorTarget } from '@/uptime.types'
-import { Card, Center, Divider } from '@mantine/core'
+import { MonitorState, StatusPageMonitor } from '@/uptime.types'
+import { Center } from '@mantine/core'
 import MonitorDetail from './MonitorDetail'
+import classes from '@/styles/Monitor.module.css'
 
-export default function MonitorList({ monitors, state }: { monitors: any; state: MonitorState }) {
+export default function MonitorList({
+  monitors,
+  state,
+}: {
+  monitors: StatusPageMonitor[]
+  state: MonitorState | null | undefined
+}) {
   return (
-    <Center>
-      <Card
-        shadow="sm"
-        padding="lg"
-        radius="md"
-        ml="xl"
-        mr="xl"
-        mt="xl"
-        withBorder
-        style={{ width: '865px' }}
-      >
-        {monitors.map((monitor: MonitorTarget) => (
-          <div key={monitor.id}>
-            <Card.Section ml="xs" mr="xs">
-              <MonitorDetail monitor={monitor} state={state} />
-            </Card.Section>
-            <Divider />
+    <Center className={classes.listCenter}>
+      <div className={classes.listPanel}>
+        {monitors.map((monitor) => (
+          <div key={monitor.id} className={classes.monitorItem}>
+            <MonitorDetail monitor={monitor} state={state} />
           </div>
         ))}
-      </Card>
+      </div>
     </Center>
   )
 }

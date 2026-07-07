@@ -1,8 +1,20 @@
 const pageConfig = {
-  // Title for your status page
-  title: 'furry百科状态监测',
+  // TDK metadata for your status page
+  title: 'Furry百科状态监测 | 网页与 API 服务状态',
+  description:
+    'Furry百科状态监测页，实时展示网页服务与 API 服务的可用性、响应时间和当前状态。',
+  keywords: [
+    'Furry百科',
+    'furryfurry',
+    '服务状态',
+    '状态监测',
+    'API 服务状态',
+    '网页服务可用性',
+    'Cloudflare',
+  ],
+  siteName: 'Furry百科状态监测',
   // Links shown at the header of your status page, could set `highlight` to `true`
-  links: [{ link: 'https://furryfurry.cn', label: '官网', highlight: true }],
+  links: [{ link: 'https://furryfurry.cn', label: '首页', highlight: true }],
 }
 
 const workerConfig = {
@@ -17,17 +29,13 @@ const workerConfig = {
       // `id` should be unique, history will be kept if the `id` remains constant
       id: '1',
       // `name` is used at status page and callback message
-      name: 'furry百科官网',
+      name: '网页服务',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
       target: 'https://furryfurry.cn',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
       statusPageLink: 'https://furryfurry.cn',
-      // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
-      sla: 99.9,
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
       timeout: 10000,
@@ -48,17 +56,13 @@ const workerConfig = {
       // `id` should be unique, history will be kept if the `id` remains constant
       id: 'furry百科api服务',
       // `name` is used at status page and callback message
-      name: 'furry百科api服务',
+      name: 'API服务①',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
       target: 'https://api.furryfurry.cn/healthz',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
       statusPageLink: 'https://api.furryfurry.cn/healthz',
-      // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
-      sla: 99.9,
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
       timeout: 10000,
@@ -79,17 +83,13 @@ const workerConfig = {
       // `id` should be unique, history will be kept if the `id` remains constant
       id: '3',
       // `name` is used at status page and callback message
-      name: 'furry百科备用api服务',
+      name: 'API服务②',
       // `method` should be a valid HTTP Method
       method: 'GET',
       // `target` is a valid URL
       target: 'https://app.furryfurry.cn/healthz',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'furry百科服务健康检查',
       // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
       statusPageLink: 'https://app.furryfurry.cn/healthz',
-      // [OPTIONAL] `sla` is ONLY used at status page to show the target SLA percentage
-      sla: 99.9,
       // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
       // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
       timeout: 10000,

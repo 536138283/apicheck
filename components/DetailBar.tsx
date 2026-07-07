@@ -1,94 +1,209 @@
-import { MonitorState, MonitorTarget } from '@/uptime.types'
-import { getColor } from '@/util/color'
+import { MonitorState, StatusPageMonitor } from '@/uptime.types'
 import { Box, Tooltip } from '@mantine/core'
 import { useResizeObserver } from '@mantine/hooks'
-import { useLayoutEffect, useRef, useState } from 'react'
-const moment = require('moment')
-require('moment-precise-range-plugin')
+import { HEALTH_STATUS, HealthStatus, getLatencyHealth } from '@/util/health'
+import classes from '@/styles/Monitor.module.css'
+
+const RECENT_WINDOW_SECONDS = 12 * 60 * 60
+const EMPTY_STATUS = {
+  label: '暂无记录',
+  color: 'rgba(148, 163, 184, 0.62)',
+  severity: 0,
+} as const
+
+type LatencyPoint = MonitorState['latency'][string]['recent'][number]
+type IncidentList = MonitorState['incident'][string]
+type BucketStatus = HealthStatus | typeof EMPTY_STATUS
+
+function formatTimeRange(start: number, end: number) {
+  const options = {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  } as const
+
+  return `${new Date(start * 1000).toLocaleTimeString('zh-CN', options)}-${new Date(
+    end * 1000
+  ).toLocaleTimeString('zh-CN', options)}`
+}
+
+function formatDuration(seconds: number) {
+  const minutes = Math.max(1, Math.round(seconds / 60))
+
+  return minutes >= 60 ? `${Math.round(minutes / 60)}小时` : `${minutes}分钟`
+}
+
+function average(values: number[]) {
+  if (values.length === 0) return null
+
+  return Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)
+}
+
+function incidentOverlapsInterval(
+  start: number,
+  end: number,
+  incidents: IncidentList | undefined,
+  fallbackEnd: number
+) {
+  return (
+    incidents?.some((incident) => {
+      const incidentStart = incident.start[0]
+      const incidentEnd = incident.end ?? fallbackEnd
+
+      return incidentStart < end && incidentEnd >= start
+    }) ?? false
+  )
+}
+
+function getBucketStatus(points: LatencyPoint[], hasIncident: boolean): BucketStatus {
+  if (hasIncident) {
+    return HEALTH_STATUS.error
+  }
+
+  if (points.length === 0) {
+    return EMPTY_STATUS
+  }
+
+  return points.reduce<HealthStatus>((worstStatus, point) => {
+    const pointStatus = getLatencyHealth(point.ping)
+
+    return pointStatus.severity > worstStatus.severity ? pointStatus : worstStatus
+  }, HEALTH_STATUS.normal)
+}
 
 export default function DetailBar({
   monitor,
   state,
 }: {
-  monitor: MonitorTarget
+  monitor: StatusPageMonitor
   state: MonitorState
 }) {
   const [barRef, barRect] = useResizeObserver()
-
-  const overlapLen = (x1: number, x2: number, y1: number, y2: number) => {
-    return Math.max(0, Math.min(x2, y2) - Math.max(x1, y1))
-  }
-
-  const uptimePercentBars = []
-
+  const incidents = state.incident[monitor.id]
   const currentTime = Math.round(Date.now() / 1000)
-  const montiorStartTime = state.incident[monitor.id][0].start[0]
+  const recentLatency = state.latency[monitor.id]?.recent ?? []
+  const lastIncident = incidents?.slice(-1)[0]
+  const shouldAppendCurrentError =
+    lastIncident?.end === undefined &&
+    (recentLatency.length === 0 || recentLatency.slice(-1)[0].time < lastIncident.start[0])
 
-  const todayStart = new Date()
-  todayStart.setHours(0, 0, 0, 0)
-
-  for (let i = 89; i >= 0; i--) {
-    const dayStart = Math.round(todayStart.getTime() / 1000) - i * 86400
-    const dayEnd = dayStart + 86400
-
-    const dayMonitorTime = overlapLen(dayStart, dayEnd, montiorStartTime, currentTime)
-    let dayDownTime = 0
-
-    for (let incident of state.incident[monitor.id]) {
-      const incidentStart = incident.start[0]
-      const incidentEnd = incident.end ?? currentTime
-
-      dayDownTime += overlapLen(dayStart, dayEnd, incidentStart, incidentEnd)
-    }
-
-    const dayPercent = (((dayMonitorTime - dayDownTime) / dayMonitorTime) * 100).toPrecision(4)
-
-    uptimePercentBars.push(
-      <Tooltip
-        multiline
-        key={i}
-        events={{ hover: true, focus: false, touch: true }}
-        label={
-          Number.isNaN(Number(dayPercent)) ? (
-            'No Data'
-          ) : (
-            <>
-              <div>{dayPercent + '% at ' + new Date(dayStart * 1000).toLocaleDateString()}</div>
-              {dayDownTime > 0 && (
-                <div>{`Down for ${moment.preciseDiff(moment(0), moment(dayDownTime * 1000))}`}</div>
-              )}
-              {/* TODO: lantency detail for each bar */}
-            </>
-          )
-        }
-      >
-        <div
-          style={{
-            height: '20px',
-            width: '7px',
-            background: getColor(dayPercent, false),
-            borderRadius: '2px',
-            marginLeft: '1px',
-            marginRight: '1px',
-          }}
-        />
-      </Tooltip>
+  const statusPoints = shouldAppendCurrentError
+    ? [
+        ...recentLatency,
+        {
+          loc: recentLatency.slice(-1)[0]?.loc ?? '',
+          ping: Number.NaN,
+          time: Math.max(lastIncident.start[0], state.lastUpdate),
+        },
+      ]
+    : recentLatency
+  const barWidth = 7
+  const gapWidth = 2
+  const horizontalPadding = 14
+  const fallbackWidth = 648
+  const availableWidth = Math.max((barRect.width || fallbackWidth) - horizontalPadding, 0)
+  const visibleCount = Math.max(24, Math.floor((availableWidth + gapWidth) / (barWidth + gapWidth)))
+  const windowStart = currentTime - RECENT_WINDOW_SECONDS
+  const bucketDuration = RECENT_WINDOW_SECONDS / visibleCount
+  const buckets = Array.from({ length: visibleCount }, (_, index) => {
+    const start = windowStart + index * bucketDuration
+    const end = index === visibleCount - 1 ? currentTime : windowStart + (index + 1) * bucketDuration
+    const points = statusPoints.filter(
+      (point) => point.time >= start && (point.time < end || index === visibleCount - 1)
     )
-  }
+    const hasIncident = incidentOverlapsInterval(start, end, incidents, currentTime)
+    const finitePings = points
+      .map((point) => point.ping)
+      .filter((ping): ping is number => Number.isFinite(ping))
+    const minPing = finitePings.length > 0 ? Math.min(...finitePings) : null
+    const maxPing = finitePings.length > 0 ? Math.max(...finitePings) : null
+    const averagePing = average(finitePings)
+
+    return {
+      start,
+      end,
+      hasIncident,
+      hasData: points.length > 0,
+      recordCount: points.length,
+      averagePing,
+      minPing,
+      maxPing,
+      status: getBucketStatus(points, hasIncident),
+    }
+  })
 
   return (
     <>
-      <Box
-        style={{
-          display: 'flex',
-          flexWrap: 'nowrap',
-          marginTop: '10px',
-          marginBottom: '5px',
-        }}
-        visibleFrom="540"
-        ref={barRef}
-      >
-        {uptimePercentBars.slice(Math.floor(Math.max(9 * 90 - barRect.width, 0) / 9), 90)}
+      <div className={classes.sectionHeader}>
+        <span className={classes.sectionTitle}>
+          服务状态
+          <span className={classes.sectionMeta}>每格约 {formatDuration(bucketDuration)}</span>
+        </span>
+        <span className={classes.barLegend}>
+          {[
+            HEALTH_STATUS.normal,
+            HEALTH_STATUS.degraded,
+            HEALTH_STATUS.error,
+            EMPTY_STATUS,
+          ].map((status) => (
+            <span className={classes.legendItem} key={status.label}>
+              <span className={classes.legendDot} style={{ background: status.color }} />
+              {status.label}
+            </span>
+          ))}
+        </span>
+      </div>
+      <Box className={classes.uptimeBars} ref={barRef}>
+        {buckets.map((bucket, index) => {
+          const timeRange = formatTimeRange(bucket.start, bucket.end)
+
+          return (
+            <Tooltip
+              multiline
+              key={`${bucket.start}-${index}`}
+              events={{ hover: true, focus: false, touch: true }}
+              label={
+                bucket.hasIncident ? (
+                  <>
+                    <div>{timeRange} 检查失败</div>
+                    <div>状态：错误</div>
+                    <div>响应：检查失败</div>
+                    <div>记录：{bucket.recordCount} 次</div>
+                  </>
+                ) : bucket.hasData ? (
+                  <>
+                    <div>{timeRange}</div>
+                    <div>状态：{bucket.status.label}</div>
+                    {bucket.averagePing !== null ? (
+                      <div>平均响应：{bucket.averagePing}ms</div>
+                    ) : null}
+                    <div>记录：{bucket.recordCount} 次</div>
+                    {bucket.minPing !== null && bucket.maxPing !== null ? (
+                      <div>
+                        范围：
+                        {bucket.minPing === bucket.maxPing
+                          ? `${bucket.maxPing}ms`
+                          : `${bucket.minPing}-${bucket.maxPing}ms`}
+                      </div>
+                    ) : null}
+                  </>
+                ) : (
+                  <>
+                    <div>{timeRange}</div>
+                    <div>暂无状态记录</div>
+                  </>
+                )
+              }
+            >
+              <div
+                className={classes.uptimeBar}
+                style={{
+                  background: bucket.status.color,
+                }}
+              />
+            </Tooltip>
+          )
+        })}
       </Box>
     </>
   )

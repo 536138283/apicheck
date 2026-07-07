@@ -18,7 +18,7 @@ type MonitorState = {
         loc: string
         ping: number
         time: number
-      }[] // recent 12 hour data, 2 min interval
+      }[] // recent 12 hour data
       all: {
         loc: string
         ping: number
@@ -33,9 +33,7 @@ type MonitorTarget = {
   name: string
   method: string // "TCP_PING" or Http Method (e.g. GET, POST, OPTIONS, etc.)
   target: string // url for http, hostname:port for tcp
-  tooltip?: string
   statusPageLink?: string
-  sla?: number
   checkLocationWorkerRoute?: string
 
   // HTTP Code
@@ -46,4 +44,6 @@ type MonitorTarget = {
   responseKeyword?: string
 }
 
-export type { MonitorState, MonitorTarget }
+type StatusPageMonitor = Pick<MonitorTarget, 'id' | 'name' | 'statusPageLink'>
+
+export type { MonitorState, MonitorTarget, StatusPageMonitor }

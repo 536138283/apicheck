@@ -1,6 +1,6 @@
 import { workerConfig } from '../../uptime.config'
 import { formatStatusChangeNotification, getWorkerLocation, notifyWithApprise } from './util'
-import { MonitorState } from '../../uptime.types'
+import { MonitorState, MonitorTarget } from '../../uptime.types'
 import { getStatus } from './monitor'
 
 export interface Env {
@@ -91,7 +91,7 @@ export default {
 
     // Check each monitor
     // TODO: concurrent status check
-    for (const monitor of workerConfig.monitors) {
+    for (const monitor of workerConfig.monitors as MonitorTarget[]) {
       console.log(`[${workerLocation}] Checking ${monitor.name}...`)
 
       let monitorStatusChanged = false

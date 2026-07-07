@@ -3,7 +3,7 @@ const map = JSON.parse(
 )
 
 function iataToCountry(iataCode: string): string {
-  return map[iataCode] || 'Unknown IATA: ' + iataCode
+  return map[iataCode] || '未知地区：' + iataCode
 }
 
 export { iataToCountry }

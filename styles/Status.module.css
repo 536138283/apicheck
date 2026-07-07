@@ -1,0 +1,59 @@
+.statusBlock {
+  text-align: center;
+}
+
+.iconWrap {
+  width: rem(74px);
+  height: rem(74px);
+  margin: 0 auto;
+}
+
+.statusIcon {
+  width: rem(58px);
+  height: rem(58px);
+}
+
+.statusTitle {
+  margin-top: rem(18px);
+  color: #152033;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+.updateText {
+  margin-top: rem(10px);
+  color: #607086;
+  text-align: center;
+  letter-spacing: 0;
+}
+
+@media (max-width: 48em) {
+  .iconWrap {
+    width: rem(66px);
+    height: rem(66px);
+  }
+
+  .statusIcon {
+    width: rem(52px);
+    height: rem(52px);
+  }
+
+  .statusTitle {
+    font-size: rem(28px);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .iconWrap {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .statusTitle {
+    color: #eef4ff;
+  }
+
+  .updateText {
+    color: #a9b7ca;
+  }
+}
