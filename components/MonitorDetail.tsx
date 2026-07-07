@@ -67,6 +67,7 @@ export default function MonitorDetail({
     : Number.isFinite(latestLatency?.ping)
       ? `${latestLatency.ping}ms`
       : '暂无数据'
+  const compactResponseText = hasOpenIncident ? '失败' : responseText
   const statusIcon =
     currentStatus.label === '正常' ? (
       <IconCircleCheck style={{ width: '1.25em', height: '1.25em', color: currentStatus.color }} />
@@ -100,15 +101,28 @@ export default function MonitorDetail({
         {monitorNameElement}
 
         <div className={classes.metrics}>
-          <Text fw={700} className={classes.metricPill} style={{ color: currentStatus.color }}>
-            当前：{currentStatus.label}
-          </Text>
-          <Text fw={700} className={classes.metricPill} style={{ color: currentStatus.color }}>
-            响应：{responseText}
-          </Text>
-          <Text fw={700} className={`${classes.metricPill} ${classes.mutedMetric}`}>
-            可用率：{availabilityPercent}%
-          </Text>
+          <span className={classes.metricPill} style={{ color: currentStatus.color }}>
+            <span className={classes.metricLabel}>当前：</span>
+            <span className={classes.metricValue}>{currentStatus.label}</span>
+          </span>
+          <span className={classes.metricPill} style={{ color: currentStatus.color }}>
+            <span className={classes.metricLabel}>响应：</span>
+            <span className={`${classes.metricValue} ${classes.desktopMetricText}`}>
+              {responseText}
+            </span>
+            <span className={`${classes.metricValue} ${classes.mobileMetricText}`}>
+              {compactResponseText}
+            </span>
+          </span>
+          <span
+            className={`${classes.metricPill} ${classes.mutedMetric} ${classes.availabilityMetric}`}
+          >
+            <span className={`${classes.metricLabel} ${classes.desktopMetricText}`}>
+              可用率：
+            </span>
+            <span className={`${classes.metricLabel} ${classes.mobileMetricText}`}>可用：</span>
+            <span className={classes.metricValue}>{availabilityPercent}%</span>
+          </span>
         </div>
       </div>
 

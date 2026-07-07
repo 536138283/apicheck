@@ -12,6 +12,22 @@ function formatElapsed(seconds: number) {
   return `${Math.floor(seconds / 86400)} 天`
 }
 
+function formatCompactElapsed(seconds: number) {
+  if (seconds < 60) return `${seconds}秒`
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}分钟`
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}小时`
+  return `${Math.floor(seconds / 86400)}天`
+}
+
+function formatCompactUpdateTime(date: Date) {
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  const hour = String(date.getHours()).padStart(2, '0')
+  const minute = String(date.getMinutes()).padStart(2, '0')
+
+  return `${month}/${day} ${hour}:${minute}`
+}
+
 function useWindowVisibility() {
   const [isVisible, setIsVisible] = useState(true);
 
@@ -80,6 +96,13 @@ export default function OverallStatus({
   const [openTime] = useState(Math.round(Date.now() / 1000))
   const [currentTime, setCurrentTime] = useState(Math.round(Date.now() / 1000))
   const isWindowVisible = useWindowVisibility()
+  const lastUpdateDate = new Date(state.lastUpdate * 1000)
+  const fullUpdateText = `最后更新：${lastUpdateDate.toLocaleString('zh-CN', {
+    hour12: false,
+  })}（${formatElapsed(currentTime - state.lastUpdate)}前）`
+  const compactUpdateText = `最近更新：${formatCompactUpdateTime(lastUpdateDate)}（${formatCompactElapsed(
+    currentTime - state.lastUpdate
+  )}前）`
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -105,8 +128,8 @@ export default function OverallStatus({
         {statusString}
       </Title>
       <Title className={classes.updateText} order={5}>
-        最后更新：
-        {`${new Date(state.lastUpdate * 1000).toLocaleString('zh-CN', { hour12: false })}（${formatElapsed(currentTime - state.lastUpdate)}前）`}
+        <span className={classes.fullUpdateText}>{fullUpdateText}</span>
+        <span className={classes.compactUpdateText}>{compactUpdateText}</span>
       </Title>
     </div>
   )

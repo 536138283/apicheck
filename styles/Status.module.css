@@ -17,6 +17,9 @@
   margin-top: rem(18px);
   color: #152033;
   text-align: center;
+  font-size: rem(30px);
+  font-weight: 700;
+  line-height: 1.18;
   letter-spacing: 0;
 }
 
@@ -24,7 +27,14 @@
   margin-top: rem(10px);
   color: #607086;
   text-align: center;
+  font-size: rem(14px);
+  font-weight: 600;
+  line-height: 1.35;
   letter-spacing: 0;
+}
+
+.compactUpdateText {
+  display: none;
 }
 
 @media (max-width: 48em) {
@@ -39,7 +49,31 @@
   }
 
   .statusTitle {
-    font-size: rem(28px);
+    max-width: 100%;
+    overflow: hidden;
+    margin-top: rem(14px);
+    font-size: rem(20px);
+    line-height: 1.2;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .updateText {
+    max-width: 100%;
+    overflow: hidden;
+    margin-top: rem(7px);
+    font-size: rem(13px);
+    line-height: 1.25;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .fullUpdateText {
+    display: none;
+  }
+
+  .compactUpdateText {
+    display: inline;
   }
 }
 

@@ -131,6 +131,13 @@ export default function DetailBar({
       status: getBucketStatus(points, hasIncident),
     }
   })
+  const legendStatuses = [
+    HEALTH_STATUS.normal,
+    HEALTH_STATUS.degraded,
+    HEALTH_STATUS.error,
+    EMPTY_STATUS,
+  ]
+  const visibleStatusLabels = new Set(buckets.map((bucket) => bucket.status.label))
 
   return (
     <>
@@ -140,13 +147,12 @@ export default function DetailBar({
           <span className={classes.sectionMeta}>每格约 {formatDuration(bucketDuration)}</span>
         </span>
         <span className={classes.barLegend}>
-          {[
-            HEALTH_STATUS.normal,
-            HEALTH_STATUS.degraded,
-            HEALTH_STATUS.error,
-            EMPTY_STATUS,
-          ].map((status) => (
-            <span className={classes.legendItem} key={status.label}>
+          {legendStatuses.map((status) => (
+            <span
+              className={classes.legendItem}
+              data-present={visibleStatusLabels.has(status.label)}
+              key={status.label}
+            >
               <span className={classes.legendDot} style={{ background: status.color }} />
               {status.label}
             </span>

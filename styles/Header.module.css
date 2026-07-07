@@ -22,7 +22,7 @@
   position: relative;
   display: block;
   line-height: 1;
-  padding: rem(7px) rem(10px);
+  padding: rem(8px) rem(13px);
   border-radius: rem(6px);
   text-decoration: none;
   color: #334155;
@@ -43,9 +43,9 @@
 
 .link[data-active]::after {
   position: absolute;
-  right: rem(8px);
+  right: rem(10px);
   bottom: rem(-8px);
-  left: rem(8px);
+  left: rem(10px);
   height: rem(2px);
   border-radius: rem(999px);
   background: #1f6f61;
@@ -53,8 +53,8 @@
 }
 
 .iconLink {
-  width: rem(42px);
-  height: rem(42px);
+  width: rem(46px);
+  height: rem(46px);
   display: flex;
   align-items: center;
   justify-content: center;
